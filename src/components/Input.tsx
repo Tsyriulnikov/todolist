@@ -1,19 +1,19 @@
-import React, {ChangeEvent,KeyboardEvent} from "react";
+import React, {ChangeEvent, KeyboardEvent} from "react";
 
 type InputPropsType = {
     inputState: string
     setInputState: (inputState: string) => void
-    callBackOnKeyPress:()=>void
+    callBackOnKeyPress: () => void
 }
 
-const Input: React.FC<InputPropsType> = ({inputState, setInputState,callBackOnKeyPress}) => {
+const Input: React.FC<InputPropsType> = ({inputState, setInputState, callBackOnKeyPress}) => {
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setInputState(e.currentTarget.value)
     }
 
-    const onKeyPressHandler = (e:KeyboardEvent<HTMLInputElement>) => {
-if(e.key==="Enter") callBackOnKeyPress()
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") callBackOnKeyPress()
     }
 
 
