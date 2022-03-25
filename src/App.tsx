@@ -1,43 +1,46 @@
 import React, {useState} from 'react';
 import './App.css';
-import TodoList, {FilterOptionsType, TasksPropType} from "./TodoList";
+import TodoList from "./TodoList";
 import {v1} from "uuid";
 
+export type FilterType = "all" | "active" | "completed"
 
-const App: React.FC<any> = () => {
-    const [tasks, setTasks] = useState<Array<TasksPropType>>([
-            {id: v1(), title: "HTML&CSS", isDone: true},
-            {id: v1(), title: "JS", isDone: true},
-            {id: v1(), title: "ReactJS", isDone: false},
-            {id: v1(), title: "Rest API", isDone: false},
-            {id: v1(), title: "GraphQL", isDone: false}
-        ]
-    )
-    const [filterCurrent, setFilterCurrent] = useState<FilterOptionsType>("all")
+function App() {
+    const [tasks, setTasks] = useState([
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "ReactJS", isDone: false},
+        {id: v1(), title: "Rest API", isDone: false},
+        {id: v1(), title: "GraphQL", isDone: false},
+    ]);
+    const [filter, setFilter] = useState<FilterType>("all")
+
+
     const deleteTask = (id: string) => {
-        setTasks(tasks.filter((el) => id !== el.id))
-    }
-    const changeIsDone = (id: string, checkCurrent: boolean) => {
-        setTasks(tasks.map((el) => el.id === id ? {...el, isDone: checkCurrent} : el))
+        setTasks(tasks.filter(el => el.id != id))
     }
 
     let newTasks = tasks
-    const filterTasks = (filter: FilterOptionsType) => {
-        setFilterCurrent(filter)
-    }
-    if (filterCurrent === "active") newTasks = tasks.filter((el) => el.isDone);
-    if (filterCurrent === "completed") newTasks = tasks.filter((el) => !el.isDone)
+    if (filter === "active") newTasks = tasks.filter(el => !el.isDone)
+    if (filter === "completed") newTasks = tasks.filter(el => el.isDone)
 
-    const addTask = (newTitle: string) => {
-        let task = {id: v1(), title: newTitle, isDone: false}
-        setTasks([task, ...tasks])
+    const changeIsDone = (id: string, currentIsDone: boolean) => {
+        setTasks(tasks.map(el => el.id === id ? {...el, isDone: currentIsDone} : el))
+    }
+
+const addTask = (titleInput:string) =>{
+        setTasks([{id: v1(), title: titleInput, isDone: false}, ...tasks])
     }
     return (
-        <TodoList tasks={newTasks}
-                  callBackDeleteTask={deleteTask}
-                  callBackSetFilterCurrent={filterTasks}
-                  callBackChecked={changeIsDone}
-                  callBackAdd={addTask}/>
+        <div className="App">
+            <TodoList tasks={newTasks}
+                      callBackDelete={deleteTask}
+                      callBackFilter={setFilter}
+                      currentFilter={filter}
+                      callBackCheckBox={changeIsDone}
+                      callBackAdd={addTask}
+            />
+        </div>
     );
 }
 
