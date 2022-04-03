@@ -20,7 +20,7 @@ const App: React.FC = () => {
 
     let [todoLists, setTodoLists] = useState<Array<TodoListsType>>([
         {id: todoListId1, title: "What lern", filter: 'all'},
-        {id: todoListId2, title: "What buy", filter: 'completed'}
+        {id: todoListId2, title: "What buy", filter: 'all'}
     ])
 
     let [tasks, setTasks] = useState<TasksObjectType>({
@@ -44,9 +44,18 @@ const App: React.FC = () => {
        let newTask = {id: v1(), title: title, isDone: false}
         setTasks({...tasks, [idTodoList]:[newTask, ...tasks[idTodoList]]})
     }
-
-
-
+const deleteTask = (idTodoList:string,idTask:string) =>{
+        setTasks({...tasks,[idTodoList]:tasks[idTodoList].filter(el=>el.id!==idTask)})
+}
+const deleteTodoList = (idTodoList:string) => {
+  setTodoLists(todoLists.filter(tl => tl.id !== idTodoList))
+  const newTasks = {...tasks}
+  delete newTasks[idTodoList]
+  setTasks(newTasks)
+}
+const changeIsDone = (idTodoList: string, idTask:string, isDone:boolean) => {
+   setTasks({...tasks, [idTodoList]:tasks[idTodoList].map(t => t.id===idTask ? {...t, isDone:isDone}:t)})
+}
 
     return (
         <div className="App">
@@ -54,8 +63,6 @@ const App: React.FC = () => {
                 let tasksForTodoList = tasks[tl.id];
                 (tl.filter === "completed") && (tasksForTodoList = tasks[tl.id].filter(t => t.isDone));
                 (tl.filter === "active") && (tasksForTodoList = tasks[tl.id].filter(t => !t.isDone));
-
-
                 return (
                     <TodoList
                         key={tl.id}
@@ -64,6 +71,10 @@ const App: React.FC = () => {
                         title={tl.title}
                         callBackChangeFilter={changeFilter}
                         callBackAddTask={addTask}
+                        callBackDeleteTask={deleteTask}
+                        callBackDeleteTodoList={deleteTodoList}
+                        callBackIsDone={changeIsDone}
+                        filter={tl.filter}
                     />
 
 
