@@ -1,33 +1,36 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 
-type AddItemFormPropsType = {
-    addTask: (title: string) => void
+type AddItemPropsType = {
+    callBack:(newTitle:string)=>void
 }
-const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
+const AddItemForm:React.FC<AddItemPropsType>=(props)=>{
 
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 
+
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
+
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null);
         if (e.charCode === 13) {
             addTask();
         }
     }
+
     const addTask = () => {
         let newTitle = title.trim();
         if (newTitle !== "") {
-            props.addTask(newTitle);
+            props.callBack(newTitle);
             setTitle("");
         } else {
             setError("Title is required");
         }
     }
-    return (
 
+    return (
         <div>
             <input value={title}
                    onChange={onChangeHandler}
@@ -39,4 +42,4 @@ const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
         </div>
     )
 }
-export default AddItemForm;
+export default AddItemForm
