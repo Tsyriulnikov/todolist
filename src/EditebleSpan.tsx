@@ -13,15 +13,17 @@ export const EditebleSpan: React.FC<EditebleSpanType> = (props) => {
     }
     const activateViewMode = () => {
         setEditMode(false)
+        props.callBackChangeTask(title)
     }
     const changeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
 const keyPressEnterHendler = (e: KeyboardEvent<HTMLInputElement>) => {
-if (e.key==="Enter") props.callBackChangeTask(title)
-    setTitle(title)
+    if (e.key === "Enter") {
+        setEditMode(false)
+        props.callBackChangeTask(title)
+    }
 }
-
     return (
 
         editMode ?

@@ -94,8 +94,24 @@ function App() {
         setTasks({...tasks, [newTodoList.id]: []})
     }
 
+const changeTaskTitle = (id: string, newValue:string, todolistId: string) => {
+    //достанем нужный массив по todolistId:
+    // let todolistTasks = tasks[todolistId];
+    // // найдём нужную таску:
+    // let task = todolistTasks.find(t => t.id === id);
+    // //изменим таску, если она нашлась
+    // if (task) {
+    //     task.title = newValue;
+    //     // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
+    //     setTasks({...tasks});
+    // }
+    setTasks({...tasks, [todolistId]:tasks[todolistId].map(t=>t.id===id ? {...t, title:newValue} : t)})
 
-    return (
+}
+const changeTodoListTitle = (newValue:string, todolistId: string) => {
+  setTodolists(todolists.map(tl=> tl.id===todolistId ? {...tl, title:newValue} : tl))
+}
+return (
         <div className="App">
             <AddItemForm addTask={addTodoList}/>
 
@@ -122,6 +138,8 @@ function App() {
                         changeTaskStatus={changeStatus}
                         filter={tl.filter}
                         removeTodolist={removeTodolist}
+                        onChangeTaskTitle={changeTaskTitle}
+                        callBackOnChangeTodoListTitle={changeTodoListTitle}
                     />
                 })
             }
