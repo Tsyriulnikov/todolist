@@ -4,7 +4,6 @@ import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, Checkbox, FormControlLabel, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-
 export type TaskType = {
     id: string
     title: string
@@ -42,10 +41,10 @@ export function Todolist(props: PropsType) {
     const onCompletedClickHandler = () => props.changeFilter("completed", props.id);
 
     return <div>
-        <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
+        <h3> <EditableSpan value={props.title} onChange={changeTodolistTitle} />
             {/*<button onClick={removeTodolist}>x</button>*/}
             <IconButton aria-label="delete" onClick={removeTodolist}>
-                <DeleteIcon/>
+                <DeleteIcon />
             </IconButton>
         </h3>
         <AddItemForm addItem={addTask}/>
@@ -63,24 +62,47 @@ export function Todolist(props: PropsType) {
 
 
                     return <li key={t.id} className={t.isDone ? "is-done" : ""}>
-                        <Checkbox onChange={onChangeHandler} checked={t.isDone}/>
-                        <EditableSpan value={t.title} onChange={onTitleChangeHandler}/>
+                        {/*<input type="checkbox" onChange={onChangeHandler} checked={t.isDone}/>*/}
+                        {/*<FormControlLabel control={<Checkbox defaultChecked onChange={onChangeHandler} checked={t.isDone}/>}/>*/}
+                        <Checkbox  onChange={onChangeHandler} checked={t.isDone} />
+
+                        <EditableSpan value={t.title} onChange={onTitleChangeHandler} />
                         <IconButton aria-label="delete" onClick={onClickHandler}>
-                            <DeleteIcon/>
+                            <DeleteIcon />
                         </IconButton>
+                        {/*<Button onClick={onClickHandler}>x</Button>*/}
                     </li>
                 })
             }
         </ul>
         <div>
 
-            <Button variant={props.filter === 'all' ? "outlined" : "contained"} color="secondary"
-                    onClick={onAllClickHandler}>All</Button>
-            <Button variant={props.filter === 'active' ? "outlined" : "contained"} color="success"
-                    onClick={onActiveClickHandler}>Active</Button>
-            <Button variant={props.filter === 'completed' ? "outlined" : "contained"} color="error"
-                    onClick={onCompletedClickHandler}>Completed</Button>
+            <Button variant={props.filter === 'all'  ? "outlined" : "contained"} color="secondary" onClick={onAllClickHandler}>All</Button>
+            <Button variant={props.filter === 'active'  ? "outlined" : "contained"} color="success" onClick={onActiveClickHandler}>Active</Button>
+            <Button variant={props.filter === 'completed'  ? "outlined" : "contained"} color="error" onClick={onCompletedClickHandler}>Completed</Button>
 
+
+
+
+            {/*<Button variant={props.filter === 'all' ? "outlined" : "contained"}*/}
+            {/*        onClick={onAllClickHandler} color="secondary">All*/}
+            {/*</Button>*/}
+            {/*<Button variant={props.filter === 'active' ? "outlined" : "contained"}*/}
+            {/*        onClick={onAllClickHandler} color="success">Active*/}
+            {/*</Button>*/}
+            {/*<Button variant={props.filter === 'completed' ? "outlined" : "contained"}*/}
+            {/*        onClick={onAllClickHandler} color="error">Completed*/}
+            {/*</Button>*/}
+
+            {/*<button className={props.filter === 'all' ? "active-filter" : ""}*/}
+            {/*        onClick={onAllClickHandler}>All*/}
+            {/*</button>*/}
+            {/*<button className={props.filter === 'active' ? "active-filter" : ""}*/}
+            {/*        onClick={onActiveClickHandler}>Active*/}
+            {/*</button>*/}
+            {/*<button className={props.filter === 'completed' ? "active-filter" : ""}*/}
+            {/*        onClick={onCompletedClickHandler}>Completed*/}
+            {/*</button>*/}
         </div>
     </div>
 }
