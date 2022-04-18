@@ -31,7 +31,7 @@ export function AddItemForm(props: AddItemFormPropsType) {
     }
 
     return <div>
-        <TextField id="outlined-basic" label="Title" variant="outlined" size="small"
+        <TextField id="outlined-basic" label="Title" variant="filled" size="small"
                value={title}
                onChange={onChangeHandler}
                onKeyPress={onKeyPressHandler}

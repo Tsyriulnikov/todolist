@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
@@ -6,6 +6,13 @@ import {AddItemForm} from './AddItemForm';
 import {AppBar, Box, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import Header from "./Header";
+import {
+    AddTodoListAC,
+    ChangeFilterTodoListAC,
+    ChangeTitleTodoListAC,
+    RemoveTodoListAC,
+    todolistsReducer
+} from "./store/todolists-reducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = {
@@ -40,11 +47,12 @@ function App() {
     }
 
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        let todolist = todolists.find(tl => tl.id === todolistId);
-        if (todolist) {
-            todolist.filter = value;
-            setTodolists([...todolists])
-        }
+        // let todolist = todolists.find(tl => tl.id === todolistId);
+        // if (todolist) {
+        //     todolist.filter = value;
+        //     setTodolists([...todolists])
+        // }
+    dispatchTodolists(ChangeFilterTodoListAC(value,todolistId))
     }
 
     function changeStatus(id: string, isDone: boolean, todolistId: string) {
@@ -75,30 +83,37 @@ function App() {
 
     function removeTodolist(id: string) {
         // засунем в стейт список тудулистов, id которых не равны тому, который нужно выкинуть
-        setTodolists(todolists.filter(tl => tl.id !== id));
+        // setTodolists(todolists.filter(tl => tl.id !== id));
         // удалим таски для этого тудулиста из второго стейта, где мы храним отдельно таски
-        delete tasks[id]; // удаляем св-во из объекта... значением которого являлся массив тасок
+        // delete tasks[id]; // удаляем св-во из объекта... значением которого являлся массив тасок
         // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-        setTasks({...tasks});
+        // setTasks({...tasks});
+        dispatchTodolists(RemoveTodoListAC(id))
     }
 
     function changeTodolistTitle(id: string, title: string) {
         // найдём нужный todolist
-        const todolist = todolists.find(tl => tl.id === id);
-        if (todolist) {
-            // если нашёлся - изменим ему заголовок
-            todolist.title = title;
-            setTodolists([...todolists]);
-        }
+        // const todolist = todolists.find(tl => tl.id === id);
+        // if (todolist) {
+        //     // если нашёлся - изменим ему заголовок
+        //     todolist.title = title;
+        //     setTodolists([...todolists]);
+        // }
+        dispatchTodolists(ChangeTitleTodoListAC(id, title))
     }
 
     let todolistId1 = v1();
     let todolistId2 = v1();
 
-    let [todolists, setTodolists] = useState<Array<TodolistType>>([
+    let [todolists, dispatchTodolists] = useReducer(todolistsReducer, [
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ])
+// let [todolists, setTodolists] = useState<Array<TodolistType>>([
+//         {id: todolistId1, title: "What to learn", filter: "all"},
+//         {id: todolistId2, title: "What to buy", filter: "all"}
+//     ])
+
 
     let [tasks, setTasks] = useState<TasksStateType>({
         [todolistId1]: [
@@ -112,13 +127,15 @@ function App() {
     });
 
     function addTodolist(title: string) {
-        let newTodolistId = v1();
-        let newTodolist: TodolistType = {id: newTodolistId, title: title, filter: 'all'};
-        setTodolists([newTodolist, ...todolists]);
+         let newTodolistId = v1();
+        // let newTodolist: TodolistType = {id: newTodolistId, title: title, filter: 'all'};
+        // setTodolists([newTodolist, ...todolists]);
+        dispatchTodolists(AddTodoListAC(title, newTodolistId))
         setTasks({
             ...tasks,
             [newTodolistId]: []
         })
+
     }
 
     return (
@@ -126,7 +143,7 @@ function App() {
 
             <Header/>
 
-            <Container fixed >
+            <Container fixed>
                 <Grid container padding={8}>
                     <AddItemForm addItem={addTodolist}/>
                 </Grid>
@@ -146,22 +163,22 @@ function App() {
                             }
 
                             return <Grid item>
-                           <Paper style={{padding:"10px"}}>
-                            <Todolist
-                                key={tl.id}
-                                id={tl.id}
-                                title={tl.title}
-                                tasks={tasksForTodolist}
-                                removeTask={removeTask}
-                                changeFilter={changeFilter}
-                                addTask={addTask}
-                                changeTaskStatus={changeStatus}
-                                filter={tl.filter}
-                                removeTodolist={removeTodolist}
-                                changeTaskTitle={changeTaskTitle}
-                                changeTodolistTitle={changeTodolistTitle}
-                            />
-                           </Paper>
+                                <Paper style={{padding: "10px"}}>
+                                    <Todolist
+                                        key={tl.id}
+                                        id={tl.id}
+                                        title={tl.title}
+                                        tasks={tasksForTodolist}
+                                        removeTask={removeTask}
+                                        changeFilter={changeFilter}
+                                        addTask={addTask}
+                                        changeTaskStatus={changeStatus}
+                                        filter={tl.filter}
+                                        removeTodolist={removeTodolist}
+                                        changeTaskTitle={changeTaskTitle}
+                                        changeTodolistTitle={changeTodolistTitle}
+                                    />
+                                </Paper>
                             </Grid>
                         })
 
