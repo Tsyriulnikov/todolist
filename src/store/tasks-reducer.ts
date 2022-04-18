@@ -23,10 +23,17 @@ type ChangeTitleTasksActionType = {
     newTitle: string
     todolistId: string
 }
-
+type AddEmptyTasksActionType = {
+    type: "ADD-EMPTY-TASK"
+    newTodolistId: string
+}
+type DeleteTodoListTasksActionType = {
+    type: "DELETE-TODOLIST-TASK-TASK"
+    todolistId: string
+}
 
 type TasksActionType = RemoveTasksActionType | AddTasksActionType | ChangeStatusTasksActionType |
-    ChangeTitleTasksActionType
+    ChangeTitleTasksActionType | AddEmptyTasksActionType | DeleteTodoListTasksActionType
 export const tasksReducer = (state: TasksStateType, action: TasksActionType): TasksStateType => {
     switch (action.type) {
         case "REMOVE-TASK": {
@@ -55,22 +62,35 @@ export const tasksReducer = (state: TasksStateType, action: TasksActionType): Ta
             if (task) {
                 task.title = action.newTitle;
             }
-                return {...state}
-            }
+            return {...state}
+        }
+        case "ADD-EMPTY-TASK": {
+            return {...state, [action.newTodolistId]: []}
+        }
+        case "DELETE-TODOLIST-TASK-TASK": {
+            delete state[action.todolistId];
+            return {...state}
         }
     }
+}
 
 
 //Action creators
-    export const RemoveTasksAC = (id: string, todoListId: string): RemoveTasksActionType => {
-        return {type: "REMOVE-TASK", id: id, todolistId: todoListId}
-    }
-    export const AddTasksAC = (title: string, todoListId: string): AddTasksActionType => {
-        return {type: "ADD-TASK", todolistId: todoListId, title: title}
-    }
-    export const ChangeStatusTasksAC = (id: string, isDone: boolean, todoListId: string): ChangeStatusTasksActionType => {
-        return {type: "CHANGE-STATUS-TASK", id: id, isDone: isDone, todolistId: todoListId}
-    }
-    export const ChangeTitleTasksAC = (id: string, newTitle: string, todoListId: string): ChangeTitleTasksActionType => {
-        return {type: "CHANGE-TITLE-TASK", id: id, newTitle: newTitle, todolistId: todoListId}
-    }
+export const RemoveTasksAC = (id: string, todoListId: string): RemoveTasksActionType => {
+    return {type: "REMOVE-TASK", id: id, todolistId: todoListId}
+}
+export const AddTasksAC = (title: string, todoListId: string): AddTasksActionType => {
+    return {type: "ADD-TASK", todolistId: todoListId, title: title}
+}
+export const ChangeStatusTasksAC = (id: string, isDone: boolean, todoListId: string): ChangeStatusTasksActionType => {
+    return {type: "CHANGE-STATUS-TASK", id: id, isDone: isDone, todolistId: todoListId}
+}
+export const ChangeTitleTasksAC = (id: string, newTitle: string, todoListId: string): ChangeTitleTasksActionType => {
+    return {type: "CHANGE-TITLE-TASK", id: id, newTitle: newTitle, todolistId: todoListId}
+}
+export const AddEmptyTasksAC = (newTodolistId: string): AddEmptyTasksActionType => {
+    return {type: "ADD-EMPTY-TASK", newTodolistId: newTodolistId}
+}
+export const DeleteTodoListTasksAC = (todoListId: string): DeleteTodoListTasksActionType => {
+    return {type: "DELETE-TODOLIST-TASK-TASK", todolistId: todoListId}
+}
