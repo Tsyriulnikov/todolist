@@ -50,8 +50,8 @@ test("get banknote list", ()=> {
     expect(result2500[0]).toBe(1000)
     expect(result2500[1]).toBe(1000)
     expect(result2500[2]).toBe(500)
-    expect(result23[0]).toBe(20)
-    expect(result23[1]).toBe(2)
-    expect(result23[2]).toBe(1)
+     expect(result23[0]).toBe(20)
+     expect(result23[1]).toBe(2)
+     expect(result23[2]).toBe(1)
 
 })
