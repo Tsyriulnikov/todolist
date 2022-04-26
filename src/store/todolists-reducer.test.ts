@@ -1,10 +1,10 @@
 import {v1} from "uuid";
 import {TodolistType} from "../App";
 import {
-    AddTodoListAC,
-    ChangeFilterTodoListAC,
-    ChangeTitleTodoListAC,
-    RemoveTodoListAC,
+    addTodoListAC,
+    changeFilterTodoListAC,
+    changeTitleTodoListAC,
+    removeTodoListAC,
     todolistsReducer
 } from "./todolists-reducer";
 
@@ -19,7 +19,7 @@ test("correct todolist should be removed", () => {
     ];
 
     // const endState = todolistsReducer(startState, {type: "REMOVE-TODOLIST", id: todolistId1})
-    const endState = todolistsReducer(startState, RemoveTodoListAC(todolistId1))
+    const endState = todolistsReducer(startState, removeTodoListAC(todolistId1))
 
     expect(endState.length).toBe(1);
     expect(endState[0].id).toBe(todolistId2);
@@ -36,7 +36,7 @@ test("add todolist", () => {
     ];
 
     // const endState = todolistsReducer(startState, {type: "ADD-TODOLIST", title: todoListTitle})
-    const endState = todolistsReducer(startState, AddTodoListAC(todoListTitle, todolistId2))
+    const endState = todolistsReducer(startState, addTodoListAC(todoListTitle))
 
     expect(endState.length).toBe(3);
     expect(endState[0].title).toBe(todoListTitle);
@@ -52,7 +52,7 @@ test("change todolist title", () => {
     ];
 
     // const endState = todolistsReducer(startState, {type: "CHANGE-TITLE-TODOLIST", id:todolistId2 ,title: todoListTitle})
-    const endState = todolistsReducer(startState, ChangeTitleTodoListAC(todoListTitle,todolistId2))
+    const endState = todolistsReducer(startState, changeTitleTodoListAC(todoListTitle,todolistId2))
 
     expect(endState.length).toBe(2);
     expect(endState[1].title).toBe(todoListTitle);
@@ -70,7 +70,7 @@ test("change todolist filter", () => {
     ];
 
     // const endState = todolistsReducer(startState, {type: "CHANGE-FILTER-TODOLIST", id:todolistId2 ,filter: 'active'})
-    const endState = todolistsReducer(startState, ChangeFilterTodoListAC(todoListFilter,todolistId2))
+    const endState = todolistsReducer(startState, changeFilterTodoListAC(todoListFilter,todolistId2))
 
     expect(endState.length).toBe(2);
     expect(endState[1].filter).toBe(todoListFilter);
