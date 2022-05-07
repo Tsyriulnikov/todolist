@@ -13,7 +13,7 @@ const initialState:TasksStateType = {
         {id: v1(), title: "React Book", isDone: true}
     ]
 }
-export const tasksReducer = (state: TasksStateType = initialState , action: TaskActionType): TasksStateType => {
+export const tasksReducer = (state = initialState , action: TaskActionType): TasksStateType => {
     switch (action.type) {
         case "REMOVE-TASK": {
                  return {...state,[action.payload.todoListId]:state[action.payload.todoListId].filter(task=>task.id
