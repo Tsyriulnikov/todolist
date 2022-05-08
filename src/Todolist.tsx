@@ -2,7 +2,7 @@ import React, {ChangeEvent, useCallback} from 'react';
 import {FilterValuesType} from './App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
-import {Button, Checkbox, FormControlLabel, IconButton} from "@mui/material";
+import {Button, Checkbox, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 export type TaskType = {
     id: string
@@ -40,6 +40,7 @@ export const Todolist = React.memo((props: PropsType) => {
     const onActiveClickHandler = () => props.changeFilter("active", props.id);
     const onCompletedClickHandler = () => props.changeFilter("completed", props.id);
 
+    console.log(props.filter)
 let tasksForTodolist = props.tasks
     if (props.filter === "active") {
         tasksForTodolist = props.tasks.filter(t => t.isDone === false);
@@ -58,7 +59,7 @@ let tasksForTodolist = props.tasks
         <AddItemForm addItem={addTask}/>
         <ul>
             {
-                props.tasks.map(t => {
+                tasksForTodolist.map(t => {
                     const onClickHandler = () => props.removeTask(t.id, props.id)
                     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                         let newIsDoneValue = e.currentTarget.checked;
