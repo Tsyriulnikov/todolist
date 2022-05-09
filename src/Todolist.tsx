@@ -4,6 +4,7 @@ import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, Checkbox, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {Tasks} from "./tasks";
 
 
 export type TaskType = {
@@ -66,6 +67,7 @@ export const Todolist = React.memo((props: PropsType) => {
                     removeTask={props.removeTask}
                     changeTaskTitle={props.changeTaskTitle}
                     todoListId={props.id}
+                    key={t.id}
                 />)
 
             }
@@ -90,34 +92,3 @@ export const Todolist = React.memo((props: PropsType) => {
 
 //Tasks
 
-type TaskPropsType = {
-    t: TaskType
-    changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
-    removeTask: (taskId: string, todolistId: string) => void
-    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
-    todoListId: string
-}
-
-export const Tasks = (props: TaskPropsType) => {
-
-
-        const onClickHandler = () => props.removeTask(props.t.id, props.todoListId)
-        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            let newIsDoneValue = e.currentTarget.checked;
-            props.changeTaskStatus(props.t.id, newIsDoneValue, props.todoListId);
-        }
-        const onTitleChangeHandler = (newValue: string) => {
-            props.changeTaskTitle(props.t.id, newValue, props.todoListId);
-        }
-
-
-        return(
-            <div key={props.t.id} className={props.t.isDone ? "is-done" : ""}>
-                <Checkbox onChange={onChangeHandler} checked={props.t.isDone}/>
-                <EditableSpan value={props.t.title} onChange={onTitleChangeHandler}/>
-                <IconButton aria-label="delete" onClick={onClickHandler}>
-                    <DeleteIcon/>
-                </IconButton>
-            </div>
-        )
-}
