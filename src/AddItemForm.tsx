@@ -2,8 +2,6 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {Box, Button, FormControl, IconButton, TextField} from "@mui/material";
 // import {AddBox} from '@material-ui/icons';
 
-
-
 type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
