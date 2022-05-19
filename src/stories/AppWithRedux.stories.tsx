@@ -14,10 +14,10 @@ export default {
 
 
 
-// export const AppWithReduxExample = ()=>{
-//    return (
-//         <AppWithRedux />
-//    )};
+export const AppWithReduxExample = ()=>{
+   return (
+        <AppWithRedux />
+   )};
 
 
 
