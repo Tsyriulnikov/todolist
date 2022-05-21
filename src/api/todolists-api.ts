@@ -95,8 +95,7 @@ export const todolistsApi = {
     },
 
     updateTodoListTitle(todolistId: string, title: string) {
-        // const promise = axios.put<ResponseType<{}>>(`https://social-network.samuraijs.com/api/1.0/todo-lists/${todolistId}`, {title: title}, settings)
-        // instanse.put(`${'todo-lists'}${'/50e3e13d-0880-480f-a0f3-6be7db67a21d'}`, {title: "First Changed again"})
+
         return instanse.put<ResponseType>(`todo-lists/${todolistId}`, {title: title})
     },
 
@@ -115,7 +114,7 @@ export const todolistsApi = {
     },
 
     updateTask(todolistId: string, taskId: string,model:UpdateTaskType) {
-        return instanse.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`,{data:model})
+        return instanse.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`,model)
     },
 }
 
