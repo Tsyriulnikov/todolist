@@ -113,9 +113,9 @@ export const UpdateTask = () => {
         <div>
             <input placeholder={"todolistId"} value={todolistId}
                    onChange={(e) => setTodolistId(e.currentTarget.value)}/>
-            <input placeholder={"taskId"} value={taskId}
-                   onChange={(e) => setTaskId(e.currentTarget.value)}/>
-            {/*<button onClick={updateTask}>update task</button>*/}
+            {/*<input placeholder={"taskId"} value={taskId}*/}
+            {/*       onChange={(e) => setTaskId(e.currentTarget.value)}/>*/}
+            <button onClick={updateTask}>update task</button>
         </div>
     </div>
 }
