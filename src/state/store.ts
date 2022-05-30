@@ -1,6 +1,7 @@
 import { tasksReducer } from './tasks-reducer';
 import { todolistsReducer } from './todolists-reducer';
-import { combineReducers, createStore } from 'redux';
+import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
+import thunk from "redux-thunk";
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
@@ -8,8 +9,18 @@ const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer
 })
+
+//Для DEVTools  Redux
+declare global {
+    interface Window {
+        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+    }
+}
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+//
+
 // непосредственно создаём store
-export const store = createStore(rootReducer);
+export const store = createStore(rootReducer,composeEnhancers(applyMiddleware(thunk)));
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
