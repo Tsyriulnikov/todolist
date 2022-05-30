@@ -103,7 +103,7 @@ export const setTodolistsAC = (todolists: Array<TodolistType>): SetTodolistsActi
     return {type: 'SET-TODOLISTS', todolists}
 }
 
-export const fetchTodolistsThunk=()=>{
+export const fetchTodolistsTC=()=>{
     return (dispatch:Dispatch)=>{
 
     todolistsAPI.getTodolists()
