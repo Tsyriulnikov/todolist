@@ -12,11 +12,11 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import {Menu} from '@mui/icons-material';
 import {
-    addTodolistAC,
+    addTodolistAC, addTodolistsTC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, fetchTodolistsTC,
+    changeTodolistTitleAC, changeTodolistTitleTC, fetchTodolistsTC,
     FilterValuesType,
-    removeTodolistAC, setTodolistsAC,
+    removeTodolistAC, removeTodolistsTC, setTodolistsAC,
     TodolistDomainType
 } from './state/todolists-reducer'
 import {
@@ -95,19 +95,31 @@ function App() {
         dispatch(action);
     }, []);
 
+    // const removeTodolist = useCallback(function (id: string) {
+    //     const action = removeTodolistAC(id);
+    //     dispatch(action);
+    // }, []);
+
     const removeTodolist = useCallback(function (id: string) {
-        const action = removeTodolistAC(id);
-        dispatch(action);
+        const thunk = removeTodolistsTC(id);
+        dispatch(thunk);
     }, []);
 
+    // const changeTodolistTitle = useCallback(function (id: string, title: string) {
+    //     const action = changeTodolistTitleAC(id, title);
+    //     dispatch(action);
+    // }, []);
     const changeTodolistTitle = useCallback(function (id: string, title: string) {
-        const action = changeTodolistTitleAC(id, title);
-        dispatch(action);
+        const thunk = changeTodolistTitleTC(id, title);
+        dispatch(thunk);
     }, []);
-
+    // const addTodolist = useCallback((title: string) => {
+    //     const action = addTodolistAC(title);
+    //     dispatch(action);
+    // }, [dispatch]);
     const addTodolist = useCallback((title: string) => {
-        const action = addTodolistAC(title);
-        dispatch(action);
+        const thunk = addTodolistsTC(title);
+        dispatch(thunk);
     }, [dispatch]);
 
     return (
