@@ -91,17 +91,17 @@ export const addTodolistTC = (title: string) => {
             .catch((error) => handleServerNetworkError(error, dispatch))
     }
 }
-// export const changeTodolistTitleTC = (id: string, title: string) => {
-//     return (dispatch: Dispatch<ActionsType>) => {
-//         dispatch(setAppStatusAC('loading'))
-//         todolistsAPI.updateTodolist(id, title)
-//             .then((res) => {
-//                 dispatch(changeTodolistTitleAC(id, title))
-//                 dispatch(setAppStatusAC('succeeded'))
-//             })
-//             .catch((error) => handleServerNetworkError(error, dispatch))
-//     }
-// }
+export const changeTodolistTitleTC = (id: string, title: string) => {
+    return (dispatch: Dispatch<ActionsType>) => {
+        dispatch(setAppStatusAC('loading'))
+        todolistsAPI.updateTodolist(id, title)
+            .then((res) => {
+                dispatch(changeTodolistTitleAC(id, title))
+                dispatch(setAppStatusAC('succeeded'))
+            })
+            .catch((error) => handleServerNetworkError(error, dispatch))
+    }
+}
 
 // types
 export type AddTodolistActionType = ReturnType<typeof addTodolistAC>;
