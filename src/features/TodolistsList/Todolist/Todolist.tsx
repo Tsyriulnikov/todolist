@@ -4,17 +4,19 @@ import { EditableSpan } from '../../../components/EditableSpan/EditableSpan'
 import { Task } from './Task/Task'
 import { TaskStatuses, TaskType } from '../../../api/todolists-api'
 import { FilterValuesType } from '../todolists-reducer'
-import { useDispatch } from 'react-redux'
-import { fetchTasksTC } from '../tasks-reducer'
+import {useDispatch, useSelector} from 'react-redux'
+import {fetchTasksTC, TasksDomainType} from '../tasks-reducer'
 
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import { Delete } from '@mui/icons-material';
+import {RequestStatusType} from "../../../app/app-reducer";
+import {AppRootStateType} from "../../../app/store";
 
 type PropsType = {
     id: string
     title: string
-    tasks: Array<TaskType>
+    tasks: Array<TasksDomainType>
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
     changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
@@ -23,12 +25,12 @@ type PropsType = {
     removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
-
+    entityStatus:RequestStatusType
 }
 
 export const Todolist = React.memo(function (props: PropsType) {
     console.log('Todolist called')
-
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const dispatch = useDispatch()
     useEffect(() => {
         const thunk = fetchTasksTC(props.id)
@@ -62,17 +64,19 @@ export const Todolist = React.memo(function (props: PropsType) {
 
     return <div>
         <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
-            <IconButton onClick={removeTodolist}>
+            <IconButton onClick={removeTodolist} disabled={status==='loading'}>
                 <Delete/>
             </IconButton>
         </h3>
-        <AddItemForm addItem={addTask}/>
+           <AddItemForm addItem={addTask} disabled={status==='loading'}/>
         <div>
             {
                 tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.id}
                                                 removeTask={props.removeTask}
                                                 changeTaskTitle={props.changeTaskTitle}
                                                 changeTaskStatus={props.changeTaskStatus}
+                                                entityStatus={t.entityStatus}
+
                 />)
             }
         </div>
