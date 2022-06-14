@@ -1,0 +1,42 @@
+
+.container {
+    text-align: center;
+    font-size: larger;
+}
+.oops {
+    font-size: 150px;
+    margin: 0;
+    color: #b5b5b5;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    letter-spacing: 1.4px;
+    text-align: center;
+}
+.pnf {
+    font-size: 50px;
+    margin: 20px;
+    color: #141212;
+    letter-spacing: 1.4px;
+    text-align: center;
+}
+.buttonHome {
+    font-weight: 500;
+    color: #141212;
+    text-decoration: none;
+    border-radius: 10px;
+    background: yellow;
+    box-shadow: 0 -3px rgb(53, 167, 110) inset;
+    transition: 0.2s;
+    margin: 50px;
+    padding: 10px;
+    width: 80px;
+}
+
+button:hover {
+    background: rgb(53, 167, 110);
+}
+
+button:active {
+    background: rgb(33, 147, 90);
+    box-shadow: 0 3px rgb(33, 147, 90) inset;
+}
