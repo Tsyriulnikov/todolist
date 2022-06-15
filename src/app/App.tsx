@@ -23,6 +23,8 @@ type PropsType = {
 
 function App({demo = false}: PropsType) {
     const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
+    const isLoggedIn = useSelector<AppRootStateType,boolean>(state => state.login.isLoggedIn)
+    const isInitialized = useSelector<AppRootStateType,boolean>(state => state.app.isInitialized)
     let navigate = useNavigate()
     return (
         <div className="App">
@@ -37,9 +39,12 @@ function App({demo = false}: PropsType) {
                     {/*<Typography variant="h6">*/}
                     {/*    News*/}
                     {/*</Typography>*/}
+                    <Button color="inherit"  disabled={isLoggedIn} onClick={() => {
+                        navigate('login')}}>LogIn</Button>
                     <Button color="inherit" onClick={() => {
-                        navigate('login')}}>Login</Button>
+                        }}>LogOut</Button>
                 </Toolbar>
+
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
             <Container fixed>

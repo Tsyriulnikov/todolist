@@ -1,4 +1,3 @@
-
 import React from 'react'
 import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
@@ -9,8 +8,10 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "./login-reducer";
+import {AppRootStateType} from "../../app/store";
+import {Navigate, useNavigate} from 'react-router-dom';
 
 type FormikErrorType = {
     email?: string
@@ -20,7 +21,9 @@ type FormikErrorType = {
 
 
 export const Login = () => {
-const dispatch = useDispatch()
+    const dispatch = useDispatch()
+    const isLoggedIn = useSelector<AppRootStateType,boolean>(state => state.login.isLoggedIn)
+    const navigate = useNavigate()
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -37,13 +40,13 @@ const dispatch = useDispatch()
 
             if (!values.password) {
                 errors.password = 'Required';
-            // } else if (!/^[A-Z0-9._%+-]{8,}$/i.test(values.password)) {
-            //     (?=.*[0-9]) - строка содержит хотя бы одно число;
-            //     (?=.*[!@#$%^&*]) - строка содержит хотя бы один спецсимвол;
-            //     (?=.*[a-z]) - строка содержит хотя бы одну латинскую букву в нижнем регистре;
-            //     (?=.*[A-Z]) - строка содержит хотя бы одну латинскую букву в верхнем регистре;
-            //     [0-9a-zA-Z!@#$%^&*]{6,} - строка состоит не менее, чем из 6 вышеупомянутых символов.
-            // } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\w\s]).{8,}$/i.test(values.password)) {
+                // } else if (!/^[A-Z0-9._%+-]{8,}$/i.test(values.password)) {
+                //     (?=.*[0-9]) - строка содержит хотя бы одно число;
+                //     (?=.*[!@#$%^&*]) - строка содержит хотя бы один спецсимвол;
+                //     (?=.*[a-z]) - строка содержит хотя бы одну латинскую букву в нижнем регистре;
+                //     (?=.*[A-Z]) - строка содержит хотя бы одну латинскую букву в верхнем регистре;
+                //     [0-9a-zA-Z!@#$%^&*]{6,} - строка состоит не менее, чем из 6 вышеупомянутых символов.
+                // } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\w\s]).{8,}$/i.test(values.password)) {
             } else if (!/^(?=.*[a-z]).{4,}$/i.test(values.password)) {
                 errors.password = 'Invalid password';
             }
@@ -51,54 +54,55 @@ const dispatch = useDispatch()
         },
 
         onSubmit: values => {
-             // alert(JSON.stringify(values));
+            // alert(JSON.stringify(values));
             dispatch(loginTC(values))
             formik.resetForm()
         },
     })
 
+     if(isLoggedIn) { return <Navigate to={'/'}/>}
 
 
-
-    return <Grid container justifyContent={'center'}>
+    return(
+    <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
             <form onSubmit={formik.handleSubmit}>
-            <FormControl>
-                <FormLabel>
-                    <p>To log in get registered
-                        <a href={'https://social-network.samuraijs.com/'}
-                           target={'_blank'}> here
-                        </a>
-                    </p>
-                    <p>or use common test account credentials:</p>
-                    <p>Email: free@samuraijs.com</p>
-                    <p>Password: free</p>
-                </FormLabel>
-                <FormGroup>
-                    <TextField
-                        label="Email"
-                        margin="normal"
+                <FormControl>
+                    <FormLabel>
+                        <p>To log in get registered
+                            <a href={'https://social-network.samuraijs.com/'}
+                               target={'_blank'}> here
+                            </a>
+                        </p>
+                        <p>or use common test account credentials:</p>
+                        <p>Email: free@samuraijs.com</p>
+                        <p>Password: free</p>
+                    </FormLabel>
+                    <FormGroup>
+                        <TextField
+                            label="Email"
+                            margin="normal"
 
-                        {...formik.getFieldProps('email')}
-                    />
-                    {formik.errors.email ? <div>{formik.errors.email}</div> : null}
-                    <TextField
-                        type="password"
-                        label="Password"
-                        margin="normal"
-                        {...formik.getFieldProps('password')}
-                    />
-                    {formik.errors.password ? <div>{formik.errors.password}</div> : null}
-                    <FormControlLabel
-                        label={'Remember me'} control={<Checkbox {...formik.getFieldProps('rememberMe')}
-                    checked={formik.values.rememberMe}/>}/>
-                    <Button type={'submit'} variant={'contained'} color={'primary'}>
-                        Login
-                    </Button>
-                </FormGroup>
-            </FormControl>
-        </form>
+                            {...formik.getFieldProps('email')}
+                        />
+                        {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+                        <TextField
+                            type="password"
+                            label="Password"
+                            margin="normal"
+                            {...formik.getFieldProps('password')}
+                        />
+                        {formik.errors.password ? <div>{formik.errors.password}</div> : null}
+                        <FormControlLabel
+                            label={'Remember me'} control={<Checkbox {...formik.getFieldProps('rememberMe')}
+                                                                     checked={formik.values.rememberMe}/>}/>
+                        <Button type={'submit'} variant={'contained'} color={'primary'}>
+                            Login
+                        </Button>
+                    </FormGroup>
+                </FormControl>
+            </form>
         </Grid>
     </Grid>
-}
+)}
 
