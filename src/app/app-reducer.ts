@@ -1,6 +1,7 @@
 import {authAPI} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {setIsLoggedInAC} from "../features/login/login-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 const initialState: InitialStateType = {
     status: 'idle',
@@ -15,7 +16,7 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
         case 'APP/SET-ERROR':
             return {...state, error: action.error}
         case "APP/SET-INITIALIZED":
-            return {...state, isInitialized:action.isInitialized}
+            return {...state, isInitialized: action.isInitialized}
         default:
             return {...state}
     }
@@ -37,17 +38,42 @@ export const setInitializedAC = (isInitialized: boolean) => ({type: 'APP/SET-INI
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 export type SetInitializedActionType = ReturnType<typeof setInitializedAC>
+export type setIsLoggedInActionType = ReturnType<typeof setIsLoggedInAC>
+
 
 //TS
 
 
-export const initializeAppTC = () => (dispatch: Dispatch) => {
+export const initializeAppTC = () => (dispatch: Dispatch<ActionsType>) => {
     authAPI.me()
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC(true));
+
             } else {
+                handleServerAppError(res.data, dispatch)
             }
+            dispatch(setInitializedAC(true));
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+        })
+}
+export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
+    authAPI.logout()
+        .then(res => {
+            if (res.data.resultCode === 0) {
+
+                dispatch(setIsLoggedInAC(false))
+
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                handleServerAppError(res.data, dispatch)
+            }
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
         })
 }
 
@@ -56,3 +82,4 @@ type ActionsType =
     | SetAppErrorActionType
     | SetAppStatusActionType
     | SetInitializedActionType
+    | setIsLoggedInActionType

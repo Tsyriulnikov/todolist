@@ -43,10 +43,12 @@ export const authAPI = {
     },
 
     me() {
+        return instance.get<any, AxiosResponse<ResponseType<{ id: number, email: string, login: string }>>>(`auth/me`);
+    },
 
+    logout() {
+        return instance.delete<any, AxiosResponse<ResponseType<{ userId?: number }>>>(`auth/login`);
     }
-
-
 }
 
 

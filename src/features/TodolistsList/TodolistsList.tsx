@@ -16,7 +16,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { AddItemForm } from '../../components/AddItemForm/AddItemForm'
 import { Todolist } from './Todolist/Todolist'
-import {useNavigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 
 type PropsType = {
     demo?: boolean
@@ -27,7 +27,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const isLoggedIn = useSelector<AppRootStateType,boolean>(state => state.login.isLoggedIn)
     const dispatch = useDispatch()
-const navigate = useNavigate()
+// const navigate = useNavigate()
     useEffect(() => {
         if (demo || !isLoggedIn) {
             return
@@ -77,7 +77,7 @@ const navigate = useNavigate()
     }, [dispatch]);
 
     // Если не залогинелись то редирект на страницу login
-   // if (!isLoggedIn) {return navigate ('login')};
+   if (!isLoggedIn) {return <Navigate to = 'login'/>};
 
     return <>
         <Grid container style={{padding: '20px'}}>
