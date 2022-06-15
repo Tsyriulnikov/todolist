@@ -13,7 +13,7 @@ import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
 import {Menu} from '@mui/icons-material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
-import {Routes, Route, Navigate} from 'react-router-dom'
+import {Routes, Route, Navigate, useNavigate} from 'react-router-dom'
 import {Login} from "../features/login/Login";
 import Error404 from "../features/Page-not-found/Error404";
 
@@ -23,6 +23,7 @@ type PropsType = {
 
 function App({demo = false}: PropsType) {
     const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
+    let navigate = useNavigate()
     return (
         <div className="App">
             <ErrorSnackbar/>
@@ -31,10 +32,13 @@ function App({demo = false}: PropsType) {
                     <IconButton edge="start" color="inherit" aria-label="menu">
                         <Menu/>
                     </IconButton>
-                    <Typography variant="h6">
-                        News
-                    </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit" onClick={() => {
+                        navigate('/')}}>Home</Button>
+                    {/*<Typography variant="h6">*/}
+                    {/*    News*/}
+                    {/*</Typography>*/}
+                    <Button color="inherit" onClick={() => {
+                        navigate('login')}}>Login</Button>
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>

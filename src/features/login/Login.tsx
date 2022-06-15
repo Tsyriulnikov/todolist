@@ -9,6 +9,8 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
+import {useDispatch} from "react-redux";
+import {loginTC} from "./login-reducer";
 
 type FormikErrorType = {
     email?: string
@@ -18,7 +20,7 @@ type FormikErrorType = {
 
 
 export const Login = () => {
-
+const dispatch = useDispatch()
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -41,14 +43,16 @@ export const Login = () => {
             //     (?=.*[a-z]) - строка содержит хотя бы одну латинскую букву в нижнем регистре;
             //     (?=.*[A-Z]) - строка содержит хотя бы одну латинскую букву в верхнем регистре;
             //     [0-9a-zA-Z!@#$%^&*]{6,} - строка состоит не менее, чем из 6 вышеупомянутых символов.
-            } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\w\s]).{8,}$/i.test(values.password)) {
+            // } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\w\s]).{8,}$/i.test(values.password)) {
+            } else if (!/^(?=.*[a-z]).{4,}$/i.test(values.password)) {
                 errors.password = 'Invalid password';
             }
             return errors;
         },
 
         onSubmit: values => {
-             alert(JSON.stringify(values));
+             // alert(JSON.stringify(values));
+            dispatch(loginTC(values))
             formik.resetForm()
         },
     })
