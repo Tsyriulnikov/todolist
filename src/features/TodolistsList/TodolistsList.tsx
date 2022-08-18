@@ -78,7 +78,7 @@ export const TodolistsList: React.FC = () => {
 
     // Если не залогинелись то редирект на страницу login
    if (!isLoggedIn) {return <Navigate to = 'login'/>};
-
+    // console.log('!!!!!!!!!!!!!!!!!'+ todolists)
     return <>
         <Grid container style={{padding: '20px'}}>
             <AddItemForm addItem={addTodolist}/>
@@ -87,7 +87,7 @@ export const TodolistsList: React.FC = () => {
             {
                 todolists.map(tl => {
                     let allTodolistTasks = tasks[tl.id]
-
+// console.log('!!!!!!!!!!!!!!!!!'+ todolists)
                     return <Grid item key={tl.id}>
                         <Paper style={{padding: '10px'}}>
                             <Todolist

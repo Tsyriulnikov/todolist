@@ -29,6 +29,8 @@ function App({demo = false}: PropsType) {
     const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
     const dispatch=useDispatch()
     const navigate = useNavigate()
+
+    //Initialization App
     useEffect(()=>{dispatch(initializeAppTC())},[])
     if (!isInitialized) {
         return (
